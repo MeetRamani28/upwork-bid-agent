@@ -1,19 +1,109 @@
 import React from 'react';
+import { Navbar } from './components/layout/Navbar';
+import { IntakeForm } from './features/intake-form/IntakeForm';
+import { useSearchFilter } from './context/SearchFilterContext';
+import { Code, CheckCircle2, AlertCircle } from 'lucide-react';
 
 function App() {
+  const { filterState, scanResults, isScanning, lastScanError } = useSearchFilter();
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-6">
-      <div className="max-w-2xl w-full bg-slate-800 border border-slate-700 rounded-xl p-8 shadow-2xl text-center space-y-4">
-        <span className="inline-block px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold rounded-full uppercase tracking-wider">
-          Upwork Bid Agent Copilot
-        </span>
-        <h1 className="text-3xl font-extrabold tracking-tight text-white">
-          Freelance RFP Intelligence System
-        </h1>
-        <p className="text-slate-400 text-sm">
-          Scaffolded with Vite, React, Tailwind CSS, TanStack Query, and Clerk Auth.
-        </p>
-      </div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      <Navbar />
+
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Banner Section */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+          <div className="space-y-2 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold rounded-full uppercase tracking-wider">
+                Phase 1: Local Dev Setup
+              </span>
+              <span className="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-400 text-xs font-mono rounded-full">
+                Step 4 Complete
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Autonomous RFP Intelligence & Auto-Proposal Copilot
+            </h1>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Scans live Upwork RSS feeds, filters batch list items via Cohere AI matching on Port 5679, and generates high-converting, technical bid proposals injected with your proof of work.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Main Intake Form Column */}
+          <div className="lg:col-span-7 space-y-6">
+            <IntakeForm />
+          </div>
+
+          {/* Real-time Payload & Webhook Inspector Column */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Live Webhook Payload Inspector */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <Code className="h-4 w-4 text-emerald-400" />
+                  <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
+                    Live n8n Webhook Payload Schema
+                  </h3>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">
+                  JSON Ready
+                </span>
+              </div>
+              <p className="text-xs text-slate-400">
+                This exact JSON object is dispatched live to your local n8n instance at <code className="text-emerald-300">http://localhost:5679/webhook/rfp-scan</code> upon submission.
+              </p>
+              <pre className="bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-xs font-mono text-emerald-300 overflow-x-auto max-h-80 resize-y">
+                {JSON.stringify(filterState, null, 2)}
+              </pre>
+            </div>
+
+            {/* Scan Results Inspector */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
+                  n8n Live Webhook Response
+                </h3>
+                {scanResults && (
+                  <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">
+                    <CheckCircle2 className="h-3 w-3" /> Received
+                  </span>
+                )}
+                {lastScanError && (
+                  <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 bg-rose-500/10 text-rose-400 rounded">
+                    <AlertCircle className="h-3 w-3" /> Error
+                  </span>
+                )}
+              </div>
+
+              {isScanning ? (
+                <div className="py-8 text-center space-y-2">
+                  <div className="inline-block p-3 bg-emerald-500/10 rounded-full text-emerald-400 animate-pulse">
+                    <Code className="h-6 w-6" />
+                  </div>
+                  <p className="text-xs text-slate-300 font-medium">Waiting for n8n execution response...</p>
+                  <p className="text-[11px] text-slate-500 font-mono">POST http://localhost:5679/webhook/rfp-scan</p>
+                </div>
+              ) : scanResults ? (
+                <pre className="bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-xs font-mono text-slate-300 overflow-x-auto max-h-60">
+                  {JSON.stringify(scanResults, null, 2)}
+                </pre>
+              ) : (
+                <div className="py-8 text-center border border-dashed border-slate-800 rounded-xl">
+                  <p className="text-xs text-slate-500">No active response yet. Click "Launch RFP Scan" to trigger your n8n workflow.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500 font-mono">
+        upwork-bid-agent • Freelance RFP Intelligence Copilot • Local Dev Port 5679
+      </footer>
     </div>
   );
 }
