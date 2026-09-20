@@ -1,0 +1,15 @@
+node_modules/
+.pnpm-store/
+.env
+.env.local
+.env.*.local
+dist/
+build/
+.n8n/
+n8n_data/
+*.sqlite
+*.db
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
