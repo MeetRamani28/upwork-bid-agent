@@ -2,6 +2,7 @@
   "name": "upwork-bid-agent",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Autonomous freelance RFP intelligence and auto-proposal copilot monorepo",
   "scripts": {
     "n8n:dev": "n8n start --port=5679",
@@ -10,9 +11,6 @@
     "frontend:build": "npm --prefix frontend run build"
   },
   "devDependencies": {
-    "autoprefixer": "^10.6.1",
-    "n8n": "^1.77.0",
-    "postcss": "^8.5.28",
-    "tailwindcss": "^4.3.3"
+    "n8n": "^1.77.0"
   }
 }
