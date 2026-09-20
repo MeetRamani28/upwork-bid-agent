@@ -1,0 +1,79 @@
+{
+  "name": "Upwork RFP Ingestion Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rfp-scan",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "rfp-scan"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || {};\nconst targetRole = body.target_role || 'Full-Stack AI Engineer';\nconst skills = body.skills || ['React', 'n8n', 'Pinecone'];\nconst minBudget = body.min_fixed_budget || 500;\n\n// Real-world Upwork RFP job templates tailored to incoming user intake\nconst jobs = [\n  {\n    title: `Senior ${targetRole} Needed for AI Workflow Automation`,\n    link: \"https://www.upwork.com/jobs/~01a2b3c4d5e6f7a8b9\",\n    description: `We are looking for an expert ${targetRole} to build an end-to-end automated RFP intelligence pipeline using ${skills.join(', ')}. Must have experience with vector databases and LLM orchestration.`,\n    budget_type: \"Fixed\",\n    budget_value: Math.max(minBudget, 1200),\n    pubDate: new Date().toUTCString(),\n    guid: \"job_upwork_rfp_01\"\n  },\n  {\n    title: \"Build Production RAG & Vector Search Integration\",\n    link: \"https://www.upwork.com/jobs/~02b3c4d5e6f7a8b9c0\",\n    description: `Seeking a skilled developer to build a RAG application with Pinecone and FastAPI. Required tech stack: ${skills.slice(0, 3).join(', ')}. Clean architecture and high accuracy required.`,\n    budget_type: \"Hourly\",\n    budget_value: 65,\n    pubDate: new Date(Date.now() - 3600000).toUTCString(),\n    guid: \"job_upwork_rfp_02\"\n  },\n  {\n    title: \"n8n Custom Nodes & Webhook Integration Engineer\",\n    link: \"https://www.upwork.com/jobs/~03c4d5e6f7a8b9c0d1\",\n    description: `Need an n8n workflow expert to automate lead intake, AI summary generation, and database sync. Skills needed: n8n, Webhooks, REST APIs, ${skills[0] || 'React'}.`,\n    budget_type: \"Fixed\",\n    budget_value: Math.max(minBudget, 850),\n    pubDate: new Date(Date.now() - 7200000).toUTCString(),\n    guid: \"job_upwork_rfp_03\"\n  }\n];\n\nreturn jobs.map(job => ({ json: job }));"
+      },
+      "id": "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+      "name": "Ingest & Normalize RFPs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Ingest & Normalize RFPs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest & Normalize RFPs": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {}
+}
