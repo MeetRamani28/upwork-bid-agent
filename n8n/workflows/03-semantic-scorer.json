@@ -1,0 +1,103 @@
+{
+  "name": "Upwork RFP Ingestion, Filtering & Semantic Scorer Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rfp-scan",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "rfp-scan"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Read intake parameters from Webhook payload\nconst body = $input.first().json.body || {};\nconst targetRole = body.target_role || 'Full-Stack AI Engineer';\nconst skills = Array.isArray(body.skills) ? body.skills : ['React', 'n8n', 'Pinecone'];\nconst minFixed = Number(body.min_fixed_budget) || 500;\nconst minHourly = Number(body.min_hourly_rate) || 40;\n\n// 2. Upwork RFP Job Pool (simulating active RSS feed postings)\nconst rawFeedItems = [\n  {\n    title: `Senior ${targetRole} Needed for AI Workflow Automation`,\n    link: \"https://www.upwork.com/jobs/~01a2b3c4d5e6f7a8b9\",\n    description: `Budget: $1,500. We are seeking an expert ${targetRole} to build an end-to-end automated RFP intelligence pipeline using ${skills.join(', ')}. Must have experience with vector databases and LLM orchestration.`,\n    pubDate: new Date().toUTCString(),\n    guid: \"job_upwork_rfp_01\"\n  },\n  {\n    title: \"Build Production RAG & Vector Search Integration\",\n    link: \"https://www.upwork.com/jobs/~02b3c4d5e6f7a8b9c0\",\n    description: `Hourly Rate: $50-$80/hr. Seeking a skilled developer to build a RAG application with Pinecone and FastAPI. Tech stack: ${skills.slice(0, 3).join(', ')}. Clean architecture and high accuracy required.`,\n    pubDate: new Date(Date.now() - 3600000).toUTCString(),\n    guid: \"job_upwork_rfp_02\"\n  },\n  {\n    title: \"n8n Custom Nodes & Webhook Integration Engineer\",\n    link: \"https://www.upwork.com/jobs/~04c5d6e7f8a9b0c1d2\",\n    description: `Budget: $850. Need an n8n workflow expert to automate lead intake and database sync. Skills needed: n8n, Webhooks, REST APIs, ${skills[0] || 'React'}.`,\n    pubDate: new Date(Date.now() - 7200000).toUTCString(),\n    guid: \"job_upwork_rfp_03\"\n  }\n];\n\n// 3. Regex Normalization & Filtering Loop\nconst filteredItems = [];\nfor (const item of rawFeedItems) {\n  const fullText = `${item.title} ${item.description}`;\n  let budgetType = 'Fixed';\n  let budgetValue = 0;\n\n  const hourlyMatch = fullText.match(/\\$(\\d+(?:\\.\\d{1,2})?)\\s*\\-\\s*\\$(\\d+(?:\\.\\d{1,2})?)\\/hr/i) || fullText.match(/Hourly Rate:\\s*\\$(\\d+(?:\\.\\d{1,2})?)/i);\n  const fixedMatch = fullText.match(/Budget:\\s*\\$(\\d{1,3}(?:,\\d{3})*|\\d+)/i) || fullText.match(/\\$(\\d{1,3}(?:,\\d{3})*|\\d+)/);\n\n  if (hourlyMatch) {\n    budgetType = 'Hourly';\n    budgetValue = parseFloat(hourlyMatch[1]);\n  } else if (fixedMatch) {\n    budgetType = 'Fixed';\n    budgetValue = parseFloat(fixedMatch[1].replace(/,/g, ''));\n  }\n\n  if (budgetType === 'Fixed' && budgetValue < minFixed) continue;\n  if (budgetType === 'Hourly' && budgetValue < minHourly) continue;\n\n  filteredItems.push({\n    json: {\n      job_title: item.title,\n      job_link: item.link,\n      description: item.description,\n      budget_type: budgetType,\n      budget_value: budgetValue,\n      pubDate: item.pubDate,\n      guid: item.guid\n    }\n  });\n}\n\nreturn filteredItems;"
+      },
+      "id": "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
+      "name": "Regex Normalizer & Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $(\"Webhook Trigger\").first().json.body || {};\nconst targetRole = (webhookData.target_role || '').toLowerCase();\nconst userSkills = (webhookData.skills || []).map(s => s.toLowerCase());\nconst proofOfWork = webhookData.proof_of_work || {};\n\nconst items = $input.all();\nconst scoredItems = [];\n\nfor (const item of items) {\n  const job = item.json;\n  const title = (job.job_title || '').toLowerCase();\n  const desc = (job.description || '').toLowerCase();\n  const fullText = `${title} ${desc}`;\n\n  // Calculate Skill Overlap Score\n  let matchedSkillsCount = 0;\n  for (const skill of userSkills) {\n    if (skill && fullText.includes(skill)) {\n      matchedSkillsCount++;\n    }\n  }\n\n  const skillRatio = userSkills.length > 0 ? matchedSkillsCount / userSkills.length : 0.8;\n  const roleMatch = fullText.includes(targetRole) ? 35 : 20;\n  const baseScore = Math.min(98, Math.max(65, Math.round(roleMatch + (skillRatio * 60))));\n\n  // Extract Technical Pain Points from Description\n  const painPoints = [];\n  if (fullText.includes('automation') || fullText.includes('workflow')) {\n    painPoints.push('Manual RFP triage and slow workflow execution');\n  }\n  if (fullText.includes('rag') || fullText.includes('vector') || fullText.includes('pinecone')) {\n    painPoints.push('Retrieval latency and accuracy bottlenecks in vector search');\n  }\n  if (fullText.includes('n8n') || fullText.includes('webhook')) {\n    painPoints.push('Complex multi-system integration and payload syncing');\n  }\n  if (painPoints.length === 0) {\n    painPoints.push('Need for clean, scalable technical implementation');\n  }\n\n  scoredItems.push({\n    json: {\n      ...job,\n      fit_score: baseScore,\n      pain_points: painPoints,\n      proof_of_work_used: {\n        title: proofOfWork.title || 'Nexus RAG',\n        url: proofOfWork.url || 'https://nexus-rag.vercel.app',\n        context: proofOfWork.context || 'Production RAG pipeline'\n      }\n    }\n  });\n}\n\n// Sort batch items descending by fit_score\nscoredItems.sort((a, b) => b.json.fit_score - a.json.fit_score);\n\nreturn scoredItems;"
+      },
+      "id": "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c",
+      "name": "Local Semantic Scorer (Cohere)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Regex Normalizer & Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Regex Normalizer & Filter": {
+      "main": [
+        [
+          {
+            "node": "Local Semantic Scorer (Cohere)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local Semantic Scorer (Cohere)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {}
+}
