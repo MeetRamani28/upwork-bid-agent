@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "description": "Autonomous freelance RFP intelligence and auto-proposal copilot monorepo",
-  "workspaces": [
-    "frontend"
-  ],
   "scripts": {
     "n8n:dev": "n8n start --port=5679",
     "n8n:prod": "n8n start --port=5678",
@@ -13,6 +10,9 @@
     "frontend:build": "npm --prefix frontend run build"
   },
   "devDependencies": {
-    "n8n": "^1.77.0"
+    "autoprefixer": "^10.6.1",
+    "n8n": "^1.77.0",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3"
   }
 }
