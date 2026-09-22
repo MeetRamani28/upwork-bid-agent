@@ -10,7 +10,7 @@ export function ProofOfWorkInput({ proofOfWork, onChange }) {
   };
 
   return (
-    <div className="space-y-4 border border-white/10 bg-[#070A10] p-4 rounded-xl">
+    <div className="space-y-4 border border-slate-800 bg-slate-950/60 p-4 rounded-xl">
       <div className="flex items-center gap-2">
         <Layers className="h-4 w-4 text-indigo-400" />
         <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
@@ -28,7 +28,7 @@ export function ProofOfWorkInput({ proofOfWork, onChange }) {
               value={proofOfWork?.title || ''}
               onChange={(e) => handleChange('title', e.target.value)}
               placeholder="e.g. Nexus RAG Engine"
-              className="w-full bg-[#0B0F17] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-medium"
             />
           </div>
         </div>
@@ -42,7 +42,7 @@ export function ProofOfWorkInput({ proofOfWork, onChange }) {
               value={proofOfWork?.url || ''}
               onChange={(e) => handleChange('url', e.target.value)}
               placeholder="https://github.com/example/nexus"
-              className="w-full bg-[#0B0F17] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-medium"
             />
           </div>
         </div>
@@ -55,7 +55,7 @@ export function ProofOfWorkInput({ proofOfWork, onChange }) {
           value={proofOfWork?.context || ''}
           onChange={(e) => handleChange('context', e.target.value)}
           placeholder="Brief technical description of architecture & results to inject in proposal drafting..."
-          className="w-full bg-[#0B0F17] border border-white/10 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 resize-none transition-all"
+          className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none transition-all font-medium"
         />
       </div>
     </div>

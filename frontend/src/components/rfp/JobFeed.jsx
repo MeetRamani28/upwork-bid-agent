@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchFilter } from '../../context/SearchFilterContext';
-import { JobCard } from '../../components/rfp/JobCard';
-import { ProposalModal } from '../../components/rfp/ProposalModal';
+import { JobCard } from './JobCard';
+import { ProposalModal } from './ProposalModal';
 import { FeedMetricsBar } from './FeedMetricsBar';
 import { Sparkles, Inbox } from 'lucide-react';
 
@@ -20,7 +20,7 @@ export function JobFeed() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-indigo-400" />
           <h2 className="text-xl font-bold text-white tracking-tight">Scouted RFP Matches & Proposals</h2>
@@ -39,7 +39,7 @@ export function JobFeed() {
       {isScanning ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-[#0B0F17]/50 border border-white/10 rounded-2xl p-6 space-y-4 animate-pulse">
+            <div key={i} className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-4 animate-pulse">
               <div className="h-4 bg-slate-800 rounded w-1/3"></div>
               <div className="h-6 bg-slate-800 rounded w-3/4"></div>
               <div className="space-y-2">
@@ -62,8 +62,8 @@ export function JobFeed() {
         </div>
       ) : (
         /* Empty Feed Placeholder */
-        <div className="bg-[#0B0F17]/80 backdrop-blur-xl border border-dashed border-white/10 rounded-2xl p-12 text-center space-y-3">
-          <div className="inline-block p-4 bg-slate-900 border border-white/10 rounded-2xl text-slate-500">
+        <div className="bg-slate-900 border border-dashed border-slate-800 rounded-2xl p-12 text-center space-y-3 shadow-xl">
+          <div className="inline-block p-4 bg-slate-950 border border-slate-800 rounded-2xl text-slate-500">
             <Inbox className="h-8 w-8 text-indigo-400" />
           </div>
           <h3 className="text-base font-bold text-slate-200">No RFP Feed Items Yet</h3>

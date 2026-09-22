@@ -5,7 +5,7 @@ export function JobCard({ job, onOpenProposal }) {
   const isHourly = job.budget_type === 'Hourly';
 
   return (
-    <div className="bg-[#0B0F17]/80 backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 rounded-2xl p-6 shadow-2xl space-y-4 transition-all hover:shadow-indigo-500/5 group flex flex-col justify-between">
+    <div className="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 shadow-xl space-y-4 transition-all hover:shadow-2xl hover:shadow-indigo-500/5 group flex flex-col justify-between">
       <div className="space-y-4">
         {/* Header Row: Title + Fit Score Badge */}
         <div className="flex items-start justify-between gap-4">
@@ -34,7 +34,7 @@ export function JobCard({ job, onOpenProposal }) {
 
           {/* Fit Score Badge */}
           <div className="flex flex-col items-end">
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-[#070A10] border border-white/10 rounded-xl">
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-950 border border-slate-800 rounded-xl">
               <Target className="h-3.5 w-3.5 text-cyan-400" />
               <span className="text-xs font-mono font-extrabold text-cyan-400">
                 {job.fit_score || 85}% Fit
@@ -49,7 +49,7 @@ export function JobCard({ job, onOpenProposal }) {
         </p>
 
         {/* Detected Pain Points & Proof of Work Badges */}
-        <div className="space-y-2 pt-3 border-t border-white/10">
+        <div className="space-y-2 pt-3 border-t border-slate-800">
           {job.pain_points && job.pain_points.length > 0 && (
             <div className="flex items-center gap-2 text-xs">
               <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
@@ -71,7 +71,7 @@ export function JobCard({ job, onOpenProposal }) {
       </div>
 
       {/* Action Footer */}
-      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+      <div className="flex items-center justify-between pt-3 border-t border-slate-800/80">
         {job.job_link && (
           <a
             href={job.job_link}
@@ -86,7 +86,7 @@ export function JobCard({ job, onOpenProposal }) {
 
         <button
           onClick={() => onOpenProposal(job)}
-          className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/15 transition-all cursor-pointer"
+          className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/20 transition-all cursor-pointer"
         >
           <FileText className="h-3.5 w-3.5" />
           <span>View Proposal</span>

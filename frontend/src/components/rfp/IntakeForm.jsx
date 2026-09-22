@@ -3,7 +3,7 @@ import { useSearchFilter } from '../../context/SearchFilterContext';
 import { SkillSelector } from './SkillSelector';
 import { ProofOfWorkInput } from './ProofOfWorkInput';
 import { sendRFPScanPayload } from '../../services/n8nWebhookService';
-import { Search, DollarSign, Clock, Zap, Loader2, Sparkles, SlidersHorizontal, ShieldCheck } from 'lucide-react';
+import { Search, DollarSign, Clock, Zap, Loader2, SlidersHorizontal } from 'lucide-react';
 
 export function IntakeForm() {
   const {
@@ -34,10 +34,10 @@ export function IntakeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-[#0B0F17]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl space-y-6">
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
+    <form onSubmit={handleSubmit} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+          <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-400">
             <SlidersHorizontal className="h-5 w-5" />
           </div>
           <div>
@@ -45,7 +45,7 @@ export function IntakeForm() {
             <p className="text-xs text-slate-400">Configure target criteria to trigger real-time scanning & AI proposals</p>
           </div>
         </div>
-        <span className="text-xs font-mono px-2.5 py-1 bg-slate-900 border border-white/10 text-slate-400 rounded-lg">
+        <span className="text-xs font-mono px-2.5 py-1 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg font-semibold">
           Port: 5679
         </span>
       </div>
@@ -63,7 +63,7 @@ export function IntakeForm() {
             value={filterState.target_role}
             onChange={(e) => updateFilters({ target_role: e.target.value })}
             placeholder="e.g. Full-Stack AI Engineer, GenAI Developer"
-            className="w-full bg-[#070A10] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-medium"
           />
         </div>
       </div>
@@ -87,7 +87,7 @@ export function IntakeForm() {
               min="0"
               value={filterState.min_fixed_budget}
               onChange={(e) => updateFilters({ min_fixed_budget: Number(e.target.value) })}
-              className="w-full bg-[#070A10] border border-white/10 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
             />
           </div>
         </div>
@@ -103,7 +103,7 @@ export function IntakeForm() {
               min="0"
               value={filterState.min_hourly_rate}
               onChange={(e) => updateFilters({ min_hourly_rate: Number(e.target.value) })}
-              className="w-full bg-[#070A10] border border-white/10 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
             />
           </div>
         </div>
@@ -115,7 +115,7 @@ export function IntakeForm() {
           <select
             value={filterState.experience_tier}
             onChange={(e) => updateFilters({ experience_tier: e.target.value })}
-            className="w-full bg-[#070A10] border border-white/10 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
           >
             <option value="Entry">Entry Tier</option>
             <option value="Intermediate">Intermediate Tier</option>
@@ -130,7 +130,7 @@ export function IntakeForm() {
           <select
             value={filterState.proposal_tone}
             onChange={(e) => updateFilters({ proposal_tone: e.target.value })}
-            className="w-full bg-[#070A10] border border-white/10 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-100 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
           >
             <option value="Direct Technical">Direct Technical</option>
             <option value="Value-First Conversational">Value-First Conversational</option>
@@ -156,7 +156,7 @@ export function IntakeForm() {
       <button
         type="submit"
         disabled={isScanning}
-        className="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 hover:opacity-95 disabled:opacity-50 text-slate-950 font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 shadow-xl shadow-indigo-500/20 transition-all cursor-pointer"
+        className="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 disabled:opacity-50 text-white font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all cursor-pointer"
       >
         {isScanning ? (
           <>
@@ -165,7 +165,7 @@ export function IntakeForm() {
           </>
         ) : (
           <>
-            <Zap className="h-4 w-4 fill-slate-950" />
+            <Zap className="h-4 w-4 fill-white" />
             <span>Launch RFP Scan & Proposal Copilot</span>
           </>
         )}

@@ -14,8 +14,8 @@ export function FeedMetricsBar({ jobs }) {
   }, jobs[0]);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#0B0F17]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl">
-      <div className="flex items-center gap-3 p-3 bg-[#070A10] border border-white/10 rounded-xl">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+      <div className="flex items-center gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl">
         <div className="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-indigo-400">
           <Zap className="h-4 w-4" />
         </div>
@@ -25,7 +25,7 @@ export function FeedMetricsBar({ jobs }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 p-3 bg-[#070A10] border border-white/10 rounded-xl">
+      <div className="flex items-center gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl">
         <div className="p-2 bg-cyan-500/10 border border-cyan-500/20 rounded-lg text-cyan-400">
           <Target className="h-4 w-4" />
         </div>
@@ -35,7 +35,7 @@ export function FeedMetricsBar({ jobs }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 p-3 bg-[#070A10] border border-white/10 rounded-xl">
+      <div className="flex items-center gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl">
         <div className="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-indigo-400">
           <DollarSign className="h-4 w-4" />
         </div>
@@ -49,7 +49,7 @@ export function FeedMetricsBar({ jobs }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 p-3 bg-[#070A10] border border-white/10 rounded-xl">
+      <div className="flex items-center gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl">
         <div className="p-2 bg-purple-500/10 border border-purple-500/20 rounded-lg text-purple-400">
           <Layers className="h-4 w-4" />
         </div>
