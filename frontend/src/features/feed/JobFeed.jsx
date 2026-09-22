@@ -20,13 +20,13 @@ export function JobFeed() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+      <div className="flex items-center justify-between border-b border-white/10 pb-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-emerald-400" />
+          <Sparkles className="h-5 w-5 text-indigo-400" />
           <h2 className="text-xl font-bold text-white tracking-tight">Scouted RFP Matches & Proposals</h2>
         </div>
         {jobs.length > 0 && (
-          <span className="text-xs font-mono px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full font-bold">
+          <span className="text-xs font-mono px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 rounded-full font-bold">
             {jobs.length} Top RFP Matches Ready
           </span>
         )}
@@ -39,12 +39,12 @@ export function JobFeed() {
       {isScanning ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 space-y-4 animate-pulse">
-              <div className="h-4 bg-slate-700 rounded w-1/3"></div>
-              <div className="h-6 bg-slate-700 rounded w-3/4"></div>
+            <div key={i} className="bg-[#0B0F17]/50 border border-white/10 rounded-2xl p-6 space-y-4 animate-pulse">
+              <div className="h-4 bg-slate-800 rounded w-1/3"></div>
+              <div className="h-6 bg-slate-800 rounded w-3/4"></div>
               <div className="space-y-2">
-                <div className="h-3 bg-slate-700/60 rounded w-full"></div>
-                <div className="h-3 bg-slate-700/60 rounded w-5/6"></div>
+                <div className="h-3 bg-slate-800/60 rounded w-full"></div>
+                <div className="h-3 bg-slate-800/60 rounded w-5/6"></div>
               </div>
             </div>
           ))}
@@ -62,12 +62,12 @@ export function JobFeed() {
         </div>
       ) : (
         /* Empty Feed Placeholder */
-        <div className="bg-slate-900 border border-dashed border-slate-800 rounded-2xl p-12 text-center space-y-3">
-          <div className="inline-block p-4 bg-slate-800 rounded-full text-slate-500">
-            <Inbox className="h-8 w-8" />
+        <div className="bg-[#0B0F17]/80 backdrop-blur-xl border border-dashed border-white/10 rounded-2xl p-12 text-center space-y-3">
+          <div className="inline-block p-4 bg-slate-900 border border-white/10 rounded-2xl text-slate-500">
+            <Inbox className="h-8 w-8 text-indigo-400" />
           </div>
-          <h3 className="text-base font-bold text-slate-300">No RFP Feed Items Yet</h3>
-          <p className="text-xs text-slate-500 max-w-md mx-auto">
+          <h3 className="text-base font-bold text-slate-200">No RFP Feed Items Yet</h3>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
             Configure your target skills and budget in the intake form above and click "Launch RFP Scan" to fetch top matching jobs and generate auto-proposals.
           </p>
         </div>

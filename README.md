@@ -1,19 +1,21 @@
-# Upwork Bid Agent 🚀
+# Upwork Bid Agent ⚡
 ### Autonomous Freelance RFP Intelligence & Auto-Proposal Copilot
 
-An intelligent, autonomous freelance RFP scouting and proposal generator monorepo powered by **React 18**, **Tailwind CSS v4**, **n8n Orchestration Engine**, **Supabase PostgreSQL**, **Pinecone Vector Database**, and **Groq & Cohere AI LLMs**.
+An intelligent, autonomous freelance RFP scouting and proposal generator monorepo powered by **React 18**, **Tailwind CSS v4**, **Clerk Auth**, **n8n Orchestration Engine**, **Supabase PostgreSQL**, **Pinecone Vector Database**, and **Cohere AI LLMs**.
 
 ---
 
 ## 🌟 Key Features
 
-- 🎯 **Intake Profile & Targeting**: Customizable client profile intake capturing role, target skills, hourly/fixed budget thresholds, and tailored proof-of-work project links.
+- 🔒 **Clerk Authentication Gate**: Enforces authentication; unauthenticated users are presented with a premium Auth Landing page.
+- 🎨 **Senior UI Engineer Design System**: Dark glassmorphic aesthetic (`bg-[#070A10]`), hairline borders, electric cyan/indigo accents, and crisp `lucide-react` icons.
+- 🎯 **Intake Profile & Targeting**: Customizable client profile intake capturing role, target skills, hourly/fixed budget thresholds, and proof-of-work project links.
 - 📡 **Automated RFP Ingestion & Parsing**: Real-time RSS feed parsing and structure normalization for freelance job listings.
 - 🧮 **Regex Budget Normalizer**: Intelligent extraction and conversion of fixed-price budgets and hourly rate ranges into standardized numerical thresholds.
 - 🤖 **Semantic Matcher & Scorer**: Vector-based semantic scoring evaluating job descriptions against candidate profile vectors using Cohere & Pinecone.
-- ✍️ **AI Proposal Drafter**: Context-aware proposal generation powered by Groq Llama-3 LLM with tone injection (Direct Technical, Conversational, Pitch) and proof-of-work citation.
+- ✍️ **AI Proposal Drafter**: Context-aware proposal generation with tone injection (Direct Technical, Conversational, Pitch) and proof-of-work citation.
 - 📊 **Interactive Feed & Metrics Dashboard**: Real-time React frontend dashboard with TanStack Query caching, job filter metrics bar, modal proposal inspector, and copy-to-clipboard functionality.
-- 💾 **Supabase Database Persistence**: Persistent storage of scouted RFPs with fit scores, identified pain points, and customized proposals stored in PostgreSQL (`scouted_rfps` table with indexing and RLS security policies).
+- 💾 **Supabase Database Persistence**: Persistent storage of scouted RFPs with fit scores, identified pain points, and customized proposals stored in PostgreSQL (`scouted_rfps` table).
 
 ---
 
@@ -21,11 +23,11 @@ An intelligent, autonomous freelance RFP scouting and proposal generator monorep
 
 ```mermaid
 flowchart LR
-    A["React Frontend (IntakeForm & JobFeed)"] -->|POST /webhook/rfp-scan| B["n8n Orchestration Engine"]
+    A["React Frontend (Clerk Auth & Dashboard)"] -->|POST /webhook/rfp-scan| B["n8n Orchestration Engine"]
     B --> C["Upwork Feed Ingestion Node"]
     C --> D["Regex Budget Normalizer Node"]
     D --> E["Pinecone & Cohere Vector Scorer"]
-    E --> F["Groq Llama-3 AI Proposal Drafter"]
+    E --> F["AI Proposal Drafter"]
     F --> G[("Supabase PostgreSQL (scouted_rfps)")]
     G --> H["React UI Feed & Proposal Inspector"]
 ```
@@ -36,13 +38,13 @@ flowchart LR
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
-| **Frontend** | React 18, Vite, Tailwind CSS v4 | Lightweight UI dashboard with responsive components |
+| **Frontend** | React 18, Vite, Tailwind CSS v4, Lucide Icons | Premium UI dashboard with high-end glassmorphism |
 | **State & Data Fetching** | TanStack React Query v5 | Efficient server state management and background refetching |
-| **Authentication** | Clerk Auth (`@clerk/clerk-react`) | Authentication wrapper for user profiles |
-| **Orchestration Backend** | n8n | Node-based workflow automation engine |
+| **Authentication** | Clerk Auth (`@clerk/clerk-react`) | Secure authentication gate protecting application access |
+| **Orchestration Backend** | n8n Engine | Node-based workflow automation engine running locally |
 | **Database** | Supabase (PostgreSQL) | Structured storage for scouted job listings and proposals |
 | **Vector Search** | Pinecone Vector Database | High-dimensional semantic indexing and similarity search |
-| **LLM & Inference** | Groq Cloud API, Cohere API | Fast AI proposal generation and semantic embeddings |
+| **LLM & Inference** | Cohere API | AI proposal generation and semantic embeddings |
 
 ---
 
@@ -52,26 +54,25 @@ flowchart LR
 upwork-bid-agent/
 ├── frontend/                     # React 18 + Vite Frontend Application
 │   ├── src/
-│   │   ├── components/           # UI Components (IntakeForm, JobFeed, JobCard, ProposalModal)
+│   │   ├── components/           # UI Components (Navbar, JobCard, ProposalModal)
 │   │   ├── context/              # SearchFilterContext state provider
+│   │   ├── features/             # Feature modules (IntakeForm, JobFeed, FeedMetricsBar)
 │   │   ├── services/             # Webhook service & API connectors
-│   │   ├── App.jsx               # Main React Application shell
+│   │   ├── App.jsx               # Main React Application shell with Auth Landing
 │   │   └── main.jsx              # Application entrypoint with Clerk provider
 │   ├── package.json
 │   └── vite.config.js
 ├── n8n/                          # n8n Orchestration Backend Assets
 │   ├── migrations/               # PostgreSQL schema migrations (01_scouted_rfps_schema.sql)
 │   ├── scripts/                  # Integration test & validation scripts
-│   ├── workflows/                # Complete exported n8n workflow JSONs
-│   │   ├── 01-rss-ingestion.json
-│   │   ├── 02-filter-normalizer.json
-│   │   ├── 03-semantic-scorer.json
-│   │   ├── 04-proposal-drafter.json
-│   │   ├── 05-phase1-smoke-test.json
-│   │   ├── 06-production-cloud-migration.json
-│   │   └── 07-phase2-cloud-smoke-test.json
-│   ├── Dockerfile                # Production Docker container definition
-│   └── .dockerignore
+│   └── workflows/                # Complete exported n8n workflow JSONs
+│       ├── 01-rss-ingestion.json
+│       ├── 02-filter-normalizer.json
+│       ├── 03-semantic-scorer.json
+│       ├── 04-proposal-drafter.json
+│       ├── 05-phase1-smoke-test.json
+│       ├── 06-production-cloud-migration.json
+│       └── 07-phase2-cloud-smoke-test.json
 ├── .env.example                  # Environment variable template
 ├── package.json                  # Root monorepo scripts
 └── README.md                     # Project documentation
@@ -85,7 +86,6 @@ upwork-bid-agent/
 
 - **Node.js**: v18.0.0 or higher
 - **npm**: v9.0.0 or higher
-- **Docker** (Optional, for running n8n in container mode)
 
 ---
 
@@ -120,10 +120,9 @@ VITE_PORT=5173
 # Cloud API Keys
 SUPABASE_URL=https://fpjupaevhszbbaowtvvq.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-GROQ_API_KEY=your_groq_api_key
 PINECONE_API_KEY=your_pinecone_api_key
 COHERE_API_KEY=your_cohere_api_key
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_key
 ```
 
 ---
@@ -157,12 +156,7 @@ CREATE INDEX IF NOT EXISTS idx_scouted_rfps_fit_score ON scouted_rfps(fit_score 
 
 #### 1. Start n8n Backend Engine:
 ```bash
-# Option A: Run via local n8n CLI
 npm run n8n
-
-# Option B: Run via Docker container (Port 5678)
-docker build -t upwork-bid-agent-n8n ./n8n
-docker run -d -p 5678:5678 --env-file .env -e N8N_PORT=5678 upwork-bid-agent-n8n:latest
 ```
 
 #### 2. Start React Frontend Dashboard:
@@ -177,12 +171,9 @@ Open `http://localhost:5173` in your browser to access the **Upwork Bid Agent** 
 
 ## 🧪 Verification & Integration Tests
 
-Run the included automated integration test scripts to verify database persistence and AI inference:
+Run the included automated integration test scripts:
 
 ```bash
-# Verify Groq AI LLM inference
-node n8n/scripts/verify-groq.js
-
 # Verify Pinecone vector index connection
 node n8n/scripts/verify-pinecone.js
 
